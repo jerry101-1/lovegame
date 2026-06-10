@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aegean Romance - 浪潮愛琴海奪妻大作戰 (動畫升級版)</title>
+    <style>
+        :root {
+            --primary-blue: #004B87;
+            --accent-pink: #FF4D6D;
+            --bg-light: #EBF3FC;
+            --card-p1: #4A90E2;
+            --card-p2: #00BFA5;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: var(--bg-light);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* 導覽列 */
+        .navbar {
+            width: 100%;
+            max-width: 1000px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            box-sizing: border-box;
+        }
+        .logo {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary-blue);
+            letter-spacing: 1px;
+        }
+        .restart-top-btn {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 6px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .restart-top-btn:hover {
+            background-color: #f0f0f0;
+            transform: rotate(-10deg); /* 輕微旋轉特效 */
+        }
+
+        /* 遊戲主容器 */
+        .game-container {
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+            max-width: 800px;
+            width: calc(100% - 40px);
+            padding: 40px;
+            margin-bottom: 40px;
+            text-align: center;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        /* 全域過場動畫級別 */
+        .fade-in {
+            animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 頂部裝飾圖示與愛心跳動動畫 */
+        .church-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+        }
+        .heart-badge {
+            position: absolute;
+            top: -10px;
+            right: -15px;
+            font-size: 1.2rem;
+            animation: heartBeat 1.5s infinite;
+        }
+
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        h1 {
+            color: var(--primary-blue);
+            font-size: 2.2rem;
+            margin: 0 0 5px 0;
+            letter-spacing: 2px;
+        }
+        .subtitle {
+            color: #555;
+            font-size: 1rem;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+        }
+
+        /* 故事背景區塊 */
+        .story-box {
+            background-color: #F4F8FD;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: left;
+            margin-bottom: 35px;
+            line-height: 1.7;
+            font-size: 0.95rem;
+            color: #444;
+        }
+        .highlight {
+            color: var(--accent-pink);
+            font-weight: bold;
+        }
+        .highlight-blue {
+            color: var(--primary-blue);
+            font-weight: bold;
+        }
+
+        /* 角色選擇區 */
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 25px;
+        }
+        .card-container {
+            display: flex;
+            gap: 25px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .role-card {
+            background: #fff;
+            border: 2px solid #E2E8F0;
+            border-radius: 16px;
+            padding: 25px;
+            width: 280px;
+            cursor: pointer;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+                        box-shadow 0.3s ease, 
+                        border-color 0.3s ease;
+            text-align: left;
+            position: relative;
+            box-sizing: border-box;
+        }
+        .role-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        .card-p1:hover { border-color: var(--card-p1); }
+        .card-p2:hover { border-color: var(--card-p2); }
+        
+        .role-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-color: #ddd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+        .role-card:hover .avatar {
+            transform: scale(1.1) rotate(5deg);
+        }
+        .avatar-p1 { background-color: #D6E4FF; }
+        .avatar-p2 { background-color: #E6FFFA; }
+
+        .tag-badge {
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+        .tag-p1 { background-color: var(--card-p1); }
+        .tag-p2 { background-color: var(--card-p2); }
+
+        .role-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #2D3748;
+            margin-bottom: 12px;
+        }
+        .role-desc {
+            font-size: 0.9rem;
+            color: #718096;
+            margin: 6px 0;
+            line-height: 1.4;
+        }
+
+        /* 遊戲進行面板 */
+        .game-play-panel {
+            display: none;
+            text-align: left;
+        }
+        
+        /* 狀態列 */
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #F7FAFC;
+            padding: 12px 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border: 1px solid #EDF2F7;
+        }
+        .stage-indicator {
+            font-weight: bold;
+            color: var(--primary-blue);
+        }
+        .score-board {
+            font-weight: bold;
+            color: var(--accent-pink);
+            background-color: #FFF5F5;
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid #FED7D7;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        /* 分數變動時的彈跳動畫類別 */
+        .pop-animation {
+            transform: scale(1.3);
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: #2D3748;
+            margin-bottom: 30px;
+        }
+
+        /* 提示卡片 */
+        .hint-box {
+            background-color: #FFFAF0;
+            border: 1px dashed #DD6B20;
+            color: #DD6B20;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+            line-height: 1.5;
+            animation: shake 0.5s ease-in-out; /* 出現時動態抖動引人注意 */
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-4px); }
+            40%, 80% { transform: translateX(4px); }
+        }
+
+        /* 選項按鈕與流暢反饋 */
+        .choice-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .choice-item {
+            background-color: #fff;
+            border: 1px solid #E2E8F0;
+            padding: 18px 25px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1rem;
+            text-align: left;
+            transition: all 0.25s ease;
+            color: #4A5568;
+            line-height: 1.5;
+            position: relative;
+            overflow: hidden;
+        }
+        .choice-item:hover {
+            background-color: #F4F8FD;
+            border-color: var(--primary-blue);
+            color: var(--primary-blue);
+            transform: translateX(8px);
+            box-shadow: -4px 4px 10px rgba(0, 75, 135, 0.08);
+        }
+        .choice-item:active {
+            transform: translateX(4px) scale(0.98);
+        }
+
+        /* 頁尾 */
+        .footer {
+            margin-top: auto;
+            padding: 20px;
+            font-size: 0.8rem;
+            color: #a0aec0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="logo">GR Aegean Romance</div>
+        <button class="restart-top-btn" onclick="resetGame()">🔄 重新開始</button>
+    </div>
+
+    <div class="game-container fade-in" id="main-container">
+        
+        <div id="start-screen">
+            <div class="church-icon">⛪<span class="heart-badge">❤️</span></div>
+            <h1>愛琴海之約</h1>
+            <div class="subtitle">— 尋找真愛：爭奪「王妍霏」大作戰 —</div>
+            
+            <div class="story-box">
+                📖 <strong>故事背景：</strong><br>
+                在浪漫唯美的希臘愛琴海畔，藍頂教堂閃耀著白光。美麗優雅的女神<span class="highlight">王妍霏</span>正在尋找她的一生摯愛。兩位英俊瀟灑的紳士——<span class="highlight-blue">陳煒奇</span>與<span class="highlight-blue">藍子瑜</span>，同時來到了這片聖地。他們將各顯神通，通過重重考驗，爭奪妍霏的芳心。誰能帶著戒指，與她白頭偕老？
+            </div>
+
+            <div class="section-title">請選擇你要扮演的角色</div>
+            
+            <div class="card-container">
+                <div class="role-card card-p1" onclick="chooseCharacter('陳煒奇')">
+                    <div class="role-header">
+                        <div class="avatar avatar-p1">👨‍💼</div>
+                        <span class="tag-badge tag-p1">陽光才子</span>
+                    </div>
+                    <div class="role-name">陳煒奇</div>
+                    <div class="role-desc"><strong>特質：</strong>深情幽默、才華橫溢</div>
+                    <div class="role-desc"><strong>優勢：</strong>善於甜言蜜語，浪漫驚喜</div>
+                </div>
+
+                <div class="role-card card-p2" onclick="chooseCharacter('藍子瑜')">
+                    <div class="role-header">
+                        <div class="avatar avatar-p2">👨‍💼</div>
+                        <span class="tag-badge tag-p2">溫柔紳士</span>
+                    </div>
+                    <div class="role-name">藍子瑜</div>
+                    <div class="role-desc"><strong>特質：</strong>溫柔體貼、穩重可靠</div>
+                    <div class="role-desc"><strong>優勢：</strong>無微不至的照顧，安全感十足</div>
+                </div>
+            </div>
+            <p style="font-size: 0.8rem; color: #a0aec0; margin-top: 30px;">本遊戲純屬娛樂，祝你順利奪得美人歸！❤️</p>
+        </div>
+
+        <div id="game-screen" class="game-play-panel">
+            <div class="status-bar">
+                <div class="stage-indicator" id="stage-label">第一關：海灘的初次邂逅</div>
+                <div class="score-board" id="score-label">❤️ 好感度：0%</div>
+            </div>
+            
+            <div class="question-text" id="question-content">
+                情境載入中...
+            </div>
+
+            <div class="hint-box" id="hint-content" style="display: none;">
+                💡 提示：
+            </div>
+
+            <div class="choice-list" id="choices-box">
+                </div>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        © 2026 Aegean Romance - 浪潮愛琴海奪妻大作戰 遊戲
+    </div>
+
+    <script>
+        // 遊戲劇本資料與原本相同
+        const gameData = {
+            '陳煒奇': {
+                'stage1': {
+                    title: '第一關：海灘的初次邂逅',
+                    text: '身為陽光才子的你（陳煒奇），在愛琴海沙灘上看到王妍霏的手帕被風吹走了。這時你該怎麼做？',
+                    hint: '陳煒奇的強項是幽默與速度，但過度浮誇可能會扣分喔！',
+                    choices: [
+                        { text: 'A. 飛奔過去幫她接住手帕，順便擺出一個帥氣的姿勢遞給她。', score: 30, next: 'stage2' },
+                        { text: 'B. 拿出吉他，當場自彈自唱一首情歌吸引她的注意。', score: -10, next: 'stage1_fail' }
+                    ]
+                },
+                'stage1_fail': {
+                    title: '第一關：海灘的初次邂逅 (失敗)',
+                    text: '你在風中大聲唱歌，結果風太大把沙子吹進了嘴裡一直咳嗽，手帕也飄遠了... 妍霏覺得有點尷尬地走開了。好感度下降！',
+                    choices: [
+                        { text: '🔄 不氣餒！重新調整姿態再出發', score: 0, resetScore: true, next: 'stage1' }
+                    ]
+                },
+                'stage2': {
+                    title: '第二關：浪漫的晚餐約會',
+                    text: '妍霏看到你帥氣的舉動，臉上一紅，對你微微一笑說了聲謝謝。接下來你打算帶她去哪裡約會？',
+                    hint: '浪漫的環境能激發陳煒奇的甜言蜜語優勢。',
+                    choices: [
+                        { text: 'A. 包下一艘白色遊艇，帶她出海看夕陽、喝香檳。', score: 40, next: 'stage3' },
+                        { text: 'B. 帶她去當地傳統市集擠來擠去，吃路邊攤。', score: -20, next: 'stage2_fail' }
+                    ]
+                },
+                'stage2_fail': {
+                    title: '第二關：浪漫的晚餐約會 (失敗)',
+                    text: '市集人潮太多，你和她走散了，浪漫氣氛全失。妍霏覺得你不太可靠，最後選擇了獨自去旅行。好感度不足！',
+                    choices: [
+                        { text: '🔄 重新回到上一關挑戰', score: 30, setScore: 30, next: 'stage2' }
+                    ]
+                },
+                'stage3': {
+                    title: '第三關：真心話大冒險',
+                    text: '在遊艇上，氣氛非常浪漫。妍霏突然看著你問：『你覺得兩個人在一起，最重要的是什麼？』這時你的回答是：',
+                    hint: '這關是能否打動她心扉的關鍵，請真誠回答！',
+                    choices: [
+                        { text: 'A. 「是新鮮感與無盡的浪漫，我會讓你每天都像在過情人節。」', score: 10, next: 'bad_end' },
+                        { text: 'B. 「是心靈的契合與陪伴，無論遇到什麼，我都會牽著你的手一起面對。」', score: 30, next: 'happy_end' }
+                    ]
+                },
+                'happy_end': {
+                    title: '🎉 最終結局：完美真愛',
+                    text: '<strong>【完美結局：愛琴海的誓言】</strong><br><br>夕陽西下，在浪漫的遊艇上，煒奇拿出精心準備的戒指。王妍霏感動得流下眼淚，答應了你的求婚！你們在愛琴海的見證下白頭偕老，過著幸福快樂的日子。好感度達到100%！',
+                    choices: [
+                        { text: '✨ 太棒了！再玩一次', score: 0, next: 'home' }
+                    ]
+                },
+                'bad_end': {
+                    title: '❌ 最終結局：遺憾錯過',
+                    text: '<strong>【遺憾結局：短暫的火花】</strong><br><br>妍霏聽完後雖然微笑，但眼神中閃過一絲失落。她覺得你可能不夠成熟穩重。旅行結束後，你們漸漸斷了聯絡，成為了彼此生命中的過客。好感度停留在 80%。',
+                    choices: [
+                        { text: '🔄 重新挑戰，改變命運', score: 0, next: 'home' }
+                    ]
+                }
+            },
+            '藍子瑜': {
+                'stage1': {
+                    title: '第一關：冷風中的體貼',
+                    text: '身為溫柔紳士的你（藍子瑜），注意到王妍霏坐在教堂旁的長椅上，似乎因為夜風大而有點著涼，微微發抖。這時你會？',
+                    hint: '藍子瑜的優勢在於無微不至的細心照顧，展現你的溫柔吧！',
+                    choices: [
+                        { text: 'A. 立刻脫下自己的西裝外套，輕輕地披在她的肩上，並遞上一杯熱咖啡。', score: 30, next: 'stage2' },
+                        { text: 'B. 走過去提醒她：『海風大，感冒就不好了，快回飯店吧。』', score: -10, next: 'stage1_fail' }
+                    ]
+                },
+                'stage1_fail': {
+                    title: '第一關：冷風中的體貼 (失敗)',
+                    text: '妍霏覺得你講話有點像說教，客套地回應了一下就提早離開了。安全感扣分！',
+                    choices: [
+                        { text: '🔄 重新展現溫柔攻勢', score: 0, resetScore: true, next: 'stage1' }
+                    ]
+                },
+                'stage2': {
+                    title: '第二關：晚餐的選擇',
+                    text: '妍霏感受到你的貼心與溫暖，對你的好感度大增。傍晚時分，你想邀請她共進晚餐，你會選擇：',
+                    hint: '選擇一個符合溫柔紳士身份、能好好調情說話的理想場所。',
+                    choices: [
+                        { text: 'A. 預約看得見藍頂教堂的頂級景觀餐廳，享受安靜的燭光晚餐。', score: 40, next: 'stage3' },
+                        { text: 'B. 帶她去當地的夜店酒吧狂歡喝酒，跳熱舞嗨翻天。', score: -20, next: 'stage2_fail' }
+                    ]
+                },
+                'stage2_fail': {
+                    title: '第二關：晚餐的選擇 (失敗)',
+                    text: '吵鬧的酒吧讓喜歡安靜的妍霏感到不適，她找了個藉口提前離席。看來你還不夠了解她的心思喔。',
+                    choices: [
+                        { text: '🔄 重新回到上一關挑戰', score: 30, setScore: 30, next: 'stage2' }
+                    ]
+                },
+                'stage3': {
+                    title: '第三關：終極的承諾',
+                    text: '在燭光晚餐的尾聲，氣氛恰到好處。妍霏看著你的眼睛，輕聲問：『沅佑，你覺得幸福的定義是什麼？』你深情地看著她回答：',
+                    hint: '這是決定命運的一刻，用你最沉穩且充滿安全感的話語打動她。',
+                    choices: [
+                        { text: 'A. 「幸福就是能和心愛的人一起經歷世界上的風風雨雨，只要有你在身邊，就是最好的風景。」', score: 30, next: 'happy_end' },
+                        { text: 'B. 「幸福就是賺很多錢，買大房子，讓你過上人人羨慕的貴婦生活。」', score: 10, next: 'bad_end' }
+                    ]
+                },
+                'happy_end': {
+                    title: '🎉 最終結局：溫暖避風港',
+                    text: '<strong>【完美結局：守護一生的承諾】</strong><br><br>在燭光與聖托里尼夜景的烘托下，你真誠沉穩的告白深深打動了王妍霏。她害羞地點頭，將手交給了你。你成功為她戴上戒指。恭喜你贏得美人歸，好感度達到100%！',
+                    choices: [
+                        { text: '✨ 太棒了！再玩一次', score: 0, next: 'home' }
+                    ]
+                },
+                'bad_end': {
+                    title: '❌ 最終結局：流於表面',
+                    text: '<strong>【遺憾結局：觀念的分歧】</strong><br><br>妍霏覺得你把幸福定義得太物質了，她追求的是心靈的陪伴。雖然你很體貼，但她還是決定只和你當普通朋友。好感度停留在 80%。',
+                    choices: [
+                        { text: '🔄 重新挑戰，改變命運', score: 0, next: 'home' }
+                    ]
+                }
+            }
+        };
+
+        let currentCharacter = "";
+        let currentStage = "";
+        let currentScore = 0;
+
+        const container = document.getElementById("main-container");
+
+        // 觸發淡入過場動畫
+        function triggerFadeIn() {
+            container.classList.remove("fade-in");
+            void container.offsetWidth; // 強制重繪觸發動畫
+            container.classList.add("fade-in");
+        }
+
+        // 選擇主角並開始
+        function chooseCharacter(name) {
+            currentCharacter = name;
+            currentStage = "stage1";
+            currentScore = 0;
+            
+            triggerFadeIn();
+            document.getElementById("start-screen").style.display = "none";
+            document.getElementById("game-screen").style.display = "block";
+            
+            renderStage();
+        }
+
+        // 渲染目前關卡內容
+        function renderStage() {
+            const stageData = gameData[currentCharacter][currentStage];
+            
+            // 更新進度條與好感度
+            document.getElementById("stage-label").innerText = stageData.title;
+            
+            const scoreLabel = document.getElementById("score-label");
+            scoreLabel.innerText = `❤️ 好感度：${currentScore}%`;
+            
+            // 觸發分數彈跳動畫
+            scoreLabel.classList.add("pop-animation");
+            setTimeout(() => {
+                scoreLabel.classList.remove("pop-animation");
+            }, 300);
+            
+            // 更新內文
+            document.getElementById("question-content").innerHTML = stageData.text;
+            
+            // 處理提示區塊
+            const hintBox = document.getElementById("hint-content");
+            if (stageData.hint) {
+                hintBox.style.display = "block";
+                hintBox.innerHTML = `💡 <strong>提示：</strong>${stageData.hint}`;
+            } else {
+                hintBox.style.display = "none";
+            }
+            
+            // 清空並重新產出選項按鈕
+            const choicesBox = document.getElementById("choices-box");
+            choicesBox.innerHTML = "";
+            
+            stageData.choices.forEach(choice => {
+                const btn = document.createElement("div");
+                btn.className = "choice-item";
+                btn.innerText = choice.text;
+                btn.onclick = () => handleChoice(choice);
+                choicesBox.appendChild(btn);
+            });
+        }
+
+        // 處理解析點擊選項後的邏輯
+        function handleChoice(choice) {
+            if (choice.next === "home") {
+                resetGame();
+                return;
+            }
+
+            // 計算分數邏輯
+            if (choice.resetScore) {
+                currentScore = 0;
+            } else if (choice.setScore !== undefined) {
+                currentScore = choice.setScore;
+            } else {
+                currentScore += choice.score;
+            }
+
+            if (currentScore < 0) currentScore = 0;
+
+            // 切換關卡並加上過場效果
+            currentStage = choice.next;
+            triggerFadeIn();
+            renderStage();
+        }
+
+        // 頂部重新開始按鈕
+        function resetGame() {
+            triggerFadeIn();
+            document.getElementById("start-screen").style.display = "block";
+            document.getElementById("game-screen").style.display = "none";
+            currentCharacter = "";
+            currentStage = "";
+            currentScore = 0;
+        }
+    </script>
+</body>
+</html>
