@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>終極井字棋 (Ultimate Tic-Tac-Toe)</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        #status {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #555;
+            padding: 8px 16px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        /* 大九宮格主體 */
+        #game-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 15px;
+            background-color: #333;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            width: 450px;
+            height: 450px;
+        }
+
+        /* 每個大格（內含小九宮格） */
+        .big-cell {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 4px;
+            background-color: #e0e0e0;
+            padding: 5px;
+            border-radius: 5px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        /* 當前被鎖定、允許落子的大格 */
+        .big-cell.active {
+            background-color: #fff9db;
+            box-shadow: 0 0 15px #fab005;
+            transform: scale(1.02);
+            z-index: 10;
+        }
+
+        /* 小格子 */
+        .small-cell {
+            background-color: #ffffff;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            user-select: none;
+            transition: background-color 0.2s;
+        }
+
+        .small-cell:hover {
+            background-color: #f1f3f5;
+        }
+
+        .small-cell.X { color: #e03131; }
+        .small-cell.O { color: #1971c2; }
+
+        /* 當某個大格被攻佔時的大符號遮罩 */
+        .big-win-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            font-weight: bold;
+            border-radius: 5px;
+            animation: popIn 0.3s ease;
+        }
+
+        .big-win-overlay.X { color: #e03131; }
+        .big-win-overlay.O { color: #1971c2; }
+        .big-win-overlay.D { color: #74b816; font-size: 3rem; } /* 平手 */
+
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        button {
+            margin-top: 25px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            background-color: #228be6;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        button:hover { background-color: #1c7ed6; }
+    </style>
+</head>
+<body>
+
+    <h1>終極井字棋</h1>
+    <div id="status">輪到 玩家 X 起手（可自由選擇大格落子）</div>
+
+    <div id="game-container" id="board">
+        </div>
+
+    <button onclick="resetGame()">重新開始</button>
+
+    <script>
+        let currentPlayer = 'X';
+        let nextBigIndex = -1; // -1 代表自由回合
+        let gameOver = false;
+
+        // 核心資料結構
+        // board[big][small] 用來存每個小格的狀態
+        const board = Array(9).fill(null).map(() => Array(9).fill(''));
+        // bigBoard 用來存 9 個大九宮格的勝負狀態 ('X', 'O', 'D', '')
+        const bigBoard = Array(9).fill('');
+
+        const winPatterns = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8], // 橫
+            [0, 3, 6], [1, 4, 7], [2, 5, 8], // 豎
+            [0, 4, 8], [2, 4, 6]             // 斜
+        ];
+
+        const container = document.getElementById('game-container');
+        const statusText = document.getElementById('status');
+
+        // 初始化/建立網頁棋盤
+        function createBoard() {
+            container.innerHTML = '';
+            for (let b = 0; b < 9; b++) {
+                const bigCell = document.createElement('div');
+                bigCell.className = 'big-cell active'; // 剛開始全部都可下
+                bigCell.dataset.big = b;
+
+                for (let s = 0; s < 9; s++) {
+                    const smallCell = document.createElement('div');
+                    smallCell.className = 'small-cell';
+                    smallCell.dataset.small = s;
+                    
+                    // 點擊事件
+                    smallCell.addEventListener('click', () => handleMove(b, s));
+                    bigCell.appendChild(smallCell);
+                }
+                container.appendChild(bigCell);
+            }
+        }
+
+        // 檢查單一九宮格勝負的邏輯
+        function checkWin(arr) {
+            for (let pattern of winPatterns) {
+                const [a, b, c] = pattern;
+                if (arr[a] && arr[a] === arr[b] && arr[a] === arr[c]) {
+                    return arr[a];
+                }
+            }
+            if (arr.every(cell => cell !== '')) return 'D'; // 滿了就平手
+            return '';
+        }
+
+        // 玩家點擊落子
+        function handleMove(bigIdx, smallIdx) {
+            if (gameOver) return;
+
+            // 檢查是否遵守核心規則：只能在被指定的大格落子（除非是自由回合）
+            if (nextBigIndex !== -1 && nextBigIndex !== bigIdx) return;
+            // 檢查大格是否已被佔領，或小格已被下過
+            if (bigBoard[bigIdx] !== '' || board[bigIdx][smallIdx] !== '') return;
+
+            // 1. 實體落子
+            board[bigIdx][smallIdx] = currentPlayer;
+            const bigCellDiv = container.children[bigIdx];
+            const smallCellDiv = bigCellDiv.children[smallIdx];
+            smallCellDiv.textContent = currentPlayer;
+            smallCellDiv.classList.add(currentPlayer);
+
+            // 2. 檢查這個大格（小九宮格）是否分出勝負
+            const smallResult = checkWin(board[bigIdx]);
+            if (smallResult && bigBoard[bigIdx] === '') {
+                bigBoard[bigIdx] = smallResult;
+                
+                // 畫面上顯示大符號遮罩
+                const overlay = document.createElement('div');
+                overlay.className = `big-win-overlay ${smallResult}`;
+                overlay.textContent = smallResult === 'D' ? '平' : smallResult;
+                bigCellDiv.appendChild(overlay);
+            }
+
+            // 3.
