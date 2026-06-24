@@ -57,7 +57,7 @@
         }
         .restart-top-btn:hover {
             background-color: #f0f0f0;
-            transform: rotate(-10deg); /* 輕微旋轉特效 */
+            transform: rotate(-10deg);
         }
 
         /* 遊戲主容器 */
@@ -74,23 +74,15 @@
             position: relative;
         }
 
-        /* 全域過場動畫級別 */
         .fade-in {
             animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(15px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* 頂部裝飾圖示與愛心跳動動畫 */
         .church-icon {
             font-size: 3rem;
             margin-bottom: 10px;
@@ -123,7 +115,6 @@
             letter-spacing: 1px;
         }
 
-        /* 故事背景區塊 */
         .story-box {
             background-color: #F4F8FD;
             border-radius: 12px;
@@ -134,16 +125,9 @@
             font-size: 0.95rem;
             color: #444;
         }
-        .highlight {
-            color: var(--accent-pink);
-            font-weight: bold;
-        }
-        .highlight-blue {
-            color: var(--primary-blue);
-            font-weight: bold;
-        }
+        .highlight { color: var(--accent-pink); font-weight: bold; }
+        .highlight-blue { color: var(--primary-blue); font-weight: bold; }
 
-        /* 角色選擇區 */
         .section-title {
             font-size: 1.1rem;
             font-weight: bold;
@@ -163,9 +147,7 @@
             padding: 25px;
             width: 280px;
             cursor: pointer;
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
-                        box-shadow 0.3s ease, 
-                        border-color 0.3s ease;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease, border-color 0.3s ease;
             text-align: left;
             position: relative;
             box-sizing: border-box;
@@ -194,9 +176,7 @@
             font-size: 1.5rem;
             transition: transform 0.3s ease;
         }
-        .role-card:hover .avatar {
-            transform: scale(1.1) rotate(5deg);
-        }
+        .role-card:hover .avatar { transform: scale(1.1) rotate(5deg); }
         .avatar-p1 { background-color: #D6E4FF; }
         .avatar-p2 { background-color: #E6FFFA; }
 
@@ -223,13 +203,8 @@
             line-height: 1.4;
         }
 
-        /* 遊戲進行面板 */
-        .game-play-panel {
-            display: none;
-            text-align: left;
-        }
+        .game-play-panel { display: none; text-align: left; }
         
-        /* 狀態列 */
         .status-bar {
             display: flex;
             justify-content: space-between;
@@ -240,10 +215,7 @@
             margin-bottom: 25px;
             border: 1px solid #EDF2F7;
         }
-        .stage-indicator {
-            font-weight: bold;
-            color: var(--primary-blue);
-        }
+        .stage-indicator { font-weight: bold; color: var(--primary-blue); }
         .score-board {
             font-weight: bold;
             color: var(--accent-pink);
@@ -253,10 +225,7 @@
             border: 1px solid #FED7D7;
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        /* 分數變動時的彈跳動畫類別 */
-        .pop-animation {
-            transform: scale(1.3);
-        }
+        .pop-animation { transform: scale(1.3); }
 
         .question-text {
             font-size: 1.1rem;
@@ -265,7 +234,6 @@
             margin-bottom: 30px;
         }
 
-        /* 提示卡片 */
         .hint-box {
             background-color: #FFFAF0;
             border: 1px dashed #DD6B20;
@@ -275,7 +243,7 @@
             font-size: 0.9rem;
             margin-bottom: 25px;
             line-height: 1.5;
-            animation: shake 0.5s ease-in-out; /* 出現時動態抖動引人注意 */
+            animation: shake 0.5s ease-in-out;
         }
 
         @keyframes shake {
@@ -284,7 +252,6 @@
             40%, 80% { transform: translateX(4px); }
         }
 
-        /* 選項按鈕與流暢反饋 */
         .choice-list {
             display: flex;
             flex-direction: column;
@@ -311,11 +278,8 @@
             transform: translateX(8px);
             box-shadow: -4px 4px 10px rgba(0, 75, 135, 0.08);
         }
-        .choice-item:active {
-            transform: translateX(4px) scale(0.98);
-        }
+        .choice-item:active { transform: translateX(4px) scale(0.98); }
 
-        /* 頁尾 */
         .footer {
             margin-top: auto;
             padding: 20px;
@@ -376,67 +340,59 @@
                 <div class="score-board" id="score-label">❤️ 好感度：0%</div>
             </div>
             
-            <div class="question-text" id="question-content">
-                情境載入中...
-            </div>
-
-            <div class="hint-box" id="hint-content" style="display: none;">
-                💡 提示：
-            </div>
-
-            <div class="choice-list" id="choices-box">
-                </div>
+            <div class="question-text" id="question-content">情境載入中...</div>
+            <div class="hint-box" id="hint-content" style="display: none;">💡 提示：</div>
+            <div class="choice-list" id="choices-box"></div>
         </div>
 
     </div>
 
     <div class="footer">
-        © 2026 Aegean Romance - 浪潮愛琴海奪妻大作戰 遊戲
+        © 2026 Aegean Romance - 浪潮愛琴海奪妻大作戰 遊戲 by 𝓳𝓮𝓻𝓻𝔂
     </div>
 
     <script>
-        // 遊戲劇本資料與原本相同
         const gameData = {
             '陳煒奇': {
                 'stage1': {
-                    title: '第一關：海灘的初次邂逅',
-                    text: '身為陽光才子的你（陳煒奇），在愛琴海沙灘上看到王妍霏的手帕被風吹走了。這時你該怎麼做？',
-                    hint: '陳煒奇的強項是幽默與速度，但過度浮誇可能會扣分喔！',
+                    title: '第一關：懸崖邊的完美自拍',
+                    text: '身為陽光才子的你（陳煒奇），看到王妍霏正站在伊亞小鎮的懸崖步道旁，風太大讓她的頭髮非常凌亂，她怎麼拍都拍不出好看的自拍照，顯得有些懊惱。這時你該怎麼做？',
+                    hint: '發揮你的攝影與幽默天賦，但千萬別吹牛吹過頭了。',
                     choices: [
-                        { text: 'A. 飛奔過去幫她接住手帕，順便擺出一個帥氣的姿勢遞給她。', score: 30, next: 'stage2' },
-                        { text: 'B. 拿出吉他，當場自彈自唱一首情歌吸引她的注意。', score: -10, next: 'stage1_fail' }
+                        { text: 'A. 走上前幽默地說：『美麗的女士，拍照需要捕風捉影，而我剛好是抓風的高手！』主動幫她調整角度拍照。', score: 30, next: 'stage2' },
+                        { text: 'B. 拿出自備的隨身大梳子衝過去幫她當場梳頭，大喊：『交給我！我來幫妳美髮！』', score: -10, next: 'stage1_fail' }
                     ]
                 },
                 'stage1_fail': {
-                    title: '第一關：海灘的初次邂逅 (失敗)',
-                    text: '你在風中大聲唱歌，結果風太大把沙子吹進了嘴裡一直咳嗽，手帕也飄遠了... 妍霏覺得有點尷尬地走開了。好感度下降！',
+                    title: '第一關：懸崖邊的完美自拍 (失敗)',
+                    text: '你突如其來的「美髮衝擊」把妍霏嚇了一大跳，而且你的大梳子還不小心扯到她的頭髮，氣氛瞬間變得超級尷尬。妍霏揉著頭客套地找藉口走開了。',
                     choices: [
-                        { text: '🔄 不氣餒！重新調整姿態再出發', score: 0, resetScore: true, next: 'stage1' }
+                        { text: '🔄 沒關係，換個幽默方式重新出發！', score: 0, resetScore: true, next: 'stage1' }
                     ]
                 },
                 'stage2': {
-                    title: '第二關：浪漫的晚餐約會',
-                    text: '妍霏看到你帥氣的舉動，臉上一紅，對你微微一笑說了聲謝謝。接下來你打算帶她去哪裡約會？',
-                    hint: '浪漫的環境能激發陳煒奇的甜言蜜語優勢。',
+                    title: '第二關：夕陽與小提琴的伏筆',
+                    text: '在你的神級拍照技術下，妍霏看著相簿裡完美的照片笑得非常開心。傍晚在觀景台等日落時，旁邊剛好有流浪街頭藝人在休息。你想給她一個突如其來的驚喜：',
+                    hint: '才華是陳煒奇最亮眼的武器，浪漫與實力兼具才是王道！',
                     choices: [
-                        { text: 'A. 包下一艘白色遊艇，帶她出海看夕陽、喝香檳。', score: 40, next: 'stage3' },
-                        { text: 'B. 帶她去當地傳統市集擠來擠去，吃路邊攤。', score: -20, next: 'stage2_fail' }
+                        { text: 'A. 走過去向藝人借了小提琴，在夕陽落下的那一刻，站在懸崖邊為妍霏拉奏一首浪漫的夜曲。', score: 40, next: 'stage3' },
+                        { text: 'B. 點燃自己帶來的巨大高空煙火。大喊：『看吧！這是我為妳承包的宇宙！』', score: -20, next: 'stage2_fail' }
                     ]
                 },
                 'stage2_fail': {
-                    title: '第二關：浪漫的晚餐約會 (失敗)',
-                    text: '市集人潮太多，你和她走散了，浪漫氣氛全失。妍霏覺得你不太可靠，最後選擇了獨自去旅行。好感度不足！',
+                    title: '第二關：夕陽與小提琴的伏筆 (失敗)',
+                    text: '由於希臘當地的懸崖步道禁止私放高空煙火，巨大的爆炸聲不僅嚇跑了所有人，還招來了當地的巡警對你開罰單。妍霏無奈地在旁邊幫你做筆錄，浪漫感全失。',
                     choices: [
-                        { text: '🔄 重新回到上一關挑戰', score: 30, setScore: 30, next: 'stage2' }
+                        { text: '🔄 收起浮誇，回到上一關重新選擇驚喜', score: 30, setScore: 30, next: 'stage2' }
                     ]
                 },
                 'stage3': {
-                    title: '第三關：真心話大冒險',
-                    text: '在遊艇上，氣氛非常浪漫。妍霏突然看著你問：『你覺得兩個人在一起，最重要的是什麼？』這時你的回答是：',
-                    hint: '這關是能否打動她心扉的關鍵，請真誠回答！',
+                    title: '第三關：浪漫星空下的夜之對話',
+                    text: '音樂結束，四週響起熱烈掌聲，妍霏臉色微紅，眼中滿是崇拜。深夜你們並肩坐在海邊聽浪，她轉頭看著你問：『煒奇，你覺得浪漫的保存期限是多久？』',
+                    hint: '最後的真誠回答，將決定她是否願意把一生交給你。',
                     choices: [
-                        { text: 'A. 「是新鮮感與無盡的浪漫，我會讓你每天都像在過情人節。」', score: 10, next: 'bad_end' },
-                        { text: 'B. 「是心靈的契合與陪伴，無論遇到什麼，我都會牽著你的手一起面對。」', score: 30, next: 'happy_end' }
+                        { text: 'A. 「浪漫只有今天，因為我每天都會為妳創造完全不一樣、充滿新鮮感的全新一天！」', score: 10, next: 'bad_end' },
+                        { text: 'B. 「只要我心跳還在的一天，這份浪漫就不會過期。它會變成習慣，一輩子陪著妳。」', score: 30, next: 'happy_end' }
                     ]
                 },
                 'happy_end': {
@@ -456,44 +412,44 @@
             },
             '藍子瑜': {
                 'stage1': {
-                    title: '第一關：冷風中的體貼',
-                    text: '身為溫柔紳士的你（藍子瑜），注意到王妍霏坐在教堂旁的長椅上，似乎因為夜風大而有點著涼，微微發抖。這時你會？',
-                    hint: '藍子瑜的優勢在於無微不至的細心照顧，展現你的溫柔吧！',
+                    title: '第一關：迷宮小鎮的守護',
+                    text: '身為溫柔紳士的你（藍子瑜），和王妍霏走在聖托里尼像迷宮一樣的白色巷弄中。迎面突然走來一群橫衝直撞、邊跑邊鬧的外國遊客，差點就要撞上走在外側的妍霏。這時你會？',
+                    hint: '紳士的靈魂在於無意識的肢體守護，細心能拿到滿分！',
                     choices: [
-                        { text: 'A. 立刻脫下自己的西裝外套，輕輕地披在她的肩上，並遞上一杯熱咖啡。', score: 30, next: 'stage2' },
-                        { text: 'B. 走過去提醒她：『海風大，感冒就不好了，快回飯店吧。』', score: -10, next: 'stage1_fail' }
+                        { text: 'A. 迅速上前一步，左手攬住她的肩膀往內側帶，用自己的後背幫她擋住橫衝直撞的人群。', score: 30, next: 'stage2' },
+                        { text: 'B. 大力吹響防狼口哨，對著外國遊客大喊：『注意安全！排好隊！』', score: -10, next: 'stage1_fail' }
                     ]
                 },
                 'stage1_fail': {
-                    title: '第一關：冷風中的體貼 (失敗)',
-                    text: '妍霏覺得你講話有點像說教，客套地回應了一下就提早離開了。安全感扣分！',
+                    title: '第一關：迷宮小鎮的守護 (失敗)',
+                    text: '你的防狼口哨非常刺耳，遊客雖然停了下來，但全部的人（包括妍霏）都用看怪人的眼神看著你。妍霏覺得太引人注目了，尷尬地快步走開。',
                     choices: [
-                        { text: '🔄 重新展現溫柔攻勢', score: 0, resetScore: true, next: 'stage1' }
+                        { text: '🔄 重新來過，換個溫柔的方式守護她', score: 0, resetScore: true, next: 'stage1' }
                     ]
                 },
                 'stage2': {
-                    title: '第二關：晚餐的選擇',
-                    text: '妍霏感受到你的貼心與溫暖，對你的好感度大增。傍晚時分，你想邀請她共進晚餐，你會選擇：',
-                    hint: '選擇一個符合溫柔紳士身份、能好好調情說話的理想場所。',
+                    title: '第二關：烈日下的解暑百寶袋',
+                    text: '避開人群後，愛琴海正午的烈日曬得妍霏香汗淋漓，附近的販賣部大排長龍，她熱得快要中暑、口渴不已。這時你優雅地打開了自己的背包：',
+                    hint: '真正的紳士永遠有備而來，安全感是由細節堆疊出來的。',
                     choices: [
-                        { text: 'A. 預約看得見藍頂教堂的頂級景觀餐廳，享受安靜的燭光晚餐。', score: 40, next: 'stage3' },
-                        { text: 'B. 帶她去當地的夜店酒吧狂歡喝酒，跳熱舞嗨翻天。', score: -20, next: 'stage2_fail' }
+                        { text: 'A. 像變魔術一樣拿出提早準備好的手持遮陽傘、濕紙巾，還有一瓶保溫瓶裡依然冰涼的蜂蜜檸檬水。', score: 40, next: 'stage3' },
+                        { text: 'B. 拿出大扇子猛烈地幫她扇風，並提議：『聽說運動能消暑，我們一路跑步回飯店吹冷氣吧！』', score: -20, next: 'stage2_fail' }
                     ]
                 },
                 'stage2_fail': {
-                    title: '第二關：晚餐的選擇 (失敗)',
-                    text: '吵鬧的酒吧讓喜歡安靜的妍霏感到不適，她找了個藉口提前離席。看來你還不夠了解她的心思喔。',
+                    title: '第二關：烈日下的解暑百寶袋 (失敗)',
+                    text: '大熱天跑步讓妍霏徹底崩潰，她頂著烈日跑得滿頭大汗，覺得你完全不能體貼女生的體力與心情。回到飯店後她就直接回房休息，再也不想出門了。',
                     choices: [
-                        { text: '🔄 重新回到上一關挑戰', score: 30, setScore: 30, next: 'stage2' }
+                        { text: '🔄 重新回到上一關，打開正確的百寶袋', score: 30, setScore: 30, next: 'stage2' }
                     ]
                 },
                 'stage3': {
-                    title: '第三關：終極的承諾',
-                    text: '在燭光晚餐的尾聲，氣氛恰到好處。妍霏看著你的眼睛，輕聲問：『沅佑，你覺得幸福的定義是什麼？』你深情地看著她回答：',
-                    hint: '這是決定命運的一刻，用你最沉穩且充滿安全感的話語打動她。',
+                    title: '第三關：燭光搖曳的終極承諾',
+                    text: '在幽靜的懸崖觀景餐廳裡，涼爽的海風吹過。妍霏一臉幸福地喝著飲料，看著滿天星空，輕聲問：『子瑜，你覺得兩個人生活，最舒服的狀態是什麼？』',
+                    hint: '用你最沉穩且充滿安全感的話語，徹底擊中她的心房吧！',
                     choices: [
-                        { text: 'A. 「幸福就是能和心愛的人一起經歷世界上的風風雨雨，只要有你在身邊，就是最好的風景。」', score: 30, next: 'happy_end' },
-                        { text: 'B. 「幸福就是賺很多錢，買大房子，讓你過上人人羨慕的貴婦生活。」', score: 10, next: 'bad_end' }
+                        { text: 'A. 「是不用刻意找話題，即使我們坐在一起各做各的事、互相沉默，也覺得無比安心。」', score: 30, next: 'happy_end' },
+                        { text: 'B. 「是兩個人一起瘋狂，把生活所有積蓄拿去環遊世界，過著令人羨慕的刺激生活。」', score: 10, next: 'bad_end' }
                     ]
                 },
                 'happy_end': {
@@ -519,14 +475,12 @@
 
         const container = document.getElementById("main-container");
 
-        // 觸發淡入過場動畫
         function triggerFadeIn() {
             container.classList.remove("fade-in");
-            void container.offsetWidth; // 強制重繪觸發動畫
+            void container.offsetWidth;
             container.classList.add("fade-in");
         }
 
-        // 選擇主角並開始
         function chooseCharacter(name) {
             currentCharacter = name;
             currentStage = "stage1";
@@ -539,26 +493,21 @@
             renderStage();
         }
 
-        // 渲染目前關卡內容
         function renderStage() {
             const stageData = gameData[currentCharacter][currentStage];
             
-            // 更新進度條與好感度
             document.getElementById("stage-label").innerText = stageData.title;
             
             const scoreLabel = document.getElementById("score-label");
             scoreLabel.innerText = `❤️ 好感度：${currentScore}%`;
             
-            // 觸發分數彈跳動畫
             scoreLabel.classList.add("pop-animation");
             setTimeout(() => {
                 scoreLabel.classList.remove("pop-animation");
             }, 300);
             
-            // 更新內文
             document.getElementById("question-content").innerHTML = stageData.text;
             
-            // 處理提示區塊
             const hintBox = document.getElementById("hint-content");
             if (stageData.hint) {
                 hintBox.style.display = "block";
@@ -567,7 +516,6 @@
                 hintBox.style.display = "none";
             }
             
-            // 清空並重新產出選項按鈕
             const choicesBox = document.getElementById("choices-box");
             choicesBox.innerHTML = "";
             
@@ -580,14 +528,12 @@
             });
         }
 
-        // 處理解析點擊選項後的邏輯
         function handleChoice(choice) {
             if (choice.next === "home") {
                 resetGame();
                 return;
             }
 
-            // 計算分數邏輯
             if (choice.resetScore) {
                 currentScore = 0;
             } else if (choice.setScore !== undefined) {
@@ -598,13 +544,11 @@
 
             if (currentScore < 0) currentScore = 0;
 
-            // 切換關卡並加上過場效果
             currentStage = choice.next;
             triggerFadeIn();
             renderStage();
         }
 
-        // 頂部重新開始按鈕
         function resetGame() {
             triggerFadeIn();
             document.getElementById("start-screen").style.display = "block";
